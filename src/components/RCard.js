@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 // import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
+// import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useEffect, useState } from "react";
 
@@ -19,7 +19,7 @@ const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  transform: !expand ? "rotate(0deg)" : "rotate(0deg)",
   marginLeft: "auto",
   transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
@@ -29,6 +29,7 @@ const ExpandMore = styled((props) => {
 export default function RCard(props) {
   const imgsrc = "https://countryflagsapi.com/png/" + props.searchh;
   const [expanded, setExpanded] = React.useState(false);
+  const [expanded2, setExpanded2] = React.useState(false);
   // const [county,setCounty] = useState(props.searchh)
   const [dataset, setDataset] = useState([]);
 
@@ -56,6 +57,9 @@ export default function RCard(props) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const handleExpandClick2 = () => {
+    setExpanded2(!expanded2);
+  };
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -72,40 +76,61 @@ export default function RCard(props) {
                 <IconButton aria-label="settings">
                   {/* <MoreVertIcon /> */}
                   <div>
-                <span className="indicator online"></span><span className="LIVE">LIVE</span>
-              </div>
+                    <span className="indicator online"></span>
+                    <span className="LIVE">LIVE</span>
+                  </div>
                 </IconButton>
               }
               title={item.country}
               subheader={item.day}
-            >
-              
-            </CardHeader>
+            ></CardHeader>
             <CardMedia>
               <img alt="sorrt" id="myImageID" src={imgsrc}></img>
             </CardMedia>
             <CardContent></CardContent>
             <CardActions disableSpacing>
               <span>{Date(item.day)}</span>
-              <IconButton aria-label="share">
-                {/* <ShareIcon /> */}
-                Click here 👉
-              </IconButton>
+              <IconButton aria-label="share">{/* <ShareIcon /> */}</IconButton>
               <ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
                 aria-expanded={expanded}
                 aria-label="show more"
               >
+                <Typography variant="subtitle1">Click here</Typography>
                 <ExpandMoreIcon />
               </ExpandMore>
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <CardContent>
-                <Typography paragraph>Cases : {item.cases.total}</Typography>
-                <Typography paragraph>Deaths : {item.deaths.total}</Typography>
                 <Typography paragraph>
-                  Total Tests Done : {item.tests.total}
+                  Cases : {item.cases.total.toLocaleString()}{" "}
+                  <ExpandMore
+                    expand={expanded2}
+                    onClick={handleExpandClick2}
+                    aria-expanded={expanded2}
+                    aria-label="show more"
+                  >
+                    <Typography variant="subtitle1"></Typography>
+                    <ExpandMoreIcon />
+                  </ExpandMore>
+                  <Collapse in={expanded2} timeout="auto" unmountOnExit>
+                    <Typography variant="subtitle1">
+                      Active : {item.cases.active.toLocaleString()}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      Critical : {item.cases.critical.toLocaleString()}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      Recovered : {item.cases.recovered.toLocaleString()}
+                    </Typography>
+                  </Collapse>
+                </Typography>
+                <Typography paragraph>
+                  Deaths : {item.deaths.total.toLocaleString()}
+                </Typography>
+                <Typography paragraph>
+                  Total Tests Done : {item.tests.total.toLocaleString()}
                 </Typography>
               </CardContent>
             </Collapse>
