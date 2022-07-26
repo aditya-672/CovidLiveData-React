@@ -88,7 +88,8 @@ export default function RCard(props) {
             <CardActions disableSpacing>
               <span>{Date(item.day)}</span>
               <IconButton aria-label="share">
-                <ShareIcon />
+                {/* <ShareIcon /> */}
+                Click here 👉
               </IconButton>
               <ExpandMore
                 expand={expanded}
